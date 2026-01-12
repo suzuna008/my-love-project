@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorite Spots - Google Maps</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALw3h6-J8yI6nEgAir5X-hw2uRV8UxpMk&libraries=places"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Search -->
+        <header class="header">
+            <div class="search-container">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="search-input" placeholder="Search for places..." autocomplete="off">
+                    <button id="search-btn" class="search-btn">Search</button>
+                </div>
+                <!-- Autocomplete Dropdown -->
+                <div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Map Container -->
+            <div class="map-container">
+                <div id="map"></div>
+                <!-- Floating Save Button -->
+                <button id="floating-save-btn" class="floating-save-btn" title="Save this spot">
+                    <span class="save-icon">💾</span>
+                    <span class="save-text">Save Spot</span>
+                </button>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Categories</h2>
+                    <button id="add-category-btn" class="add-btn" title="Add Category">+</button>
+                </div>
+                
+                <div class="categories-list" id="categories-list">
+                    <!-- Categories will be dynamically added here -->
+                </div>
+
+                <!-- Add Category Modal -->
+                <div id="category-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3>Create New Category</h3>
+                        <input type="text" id="category-name-input" placeholder="Category name (e.g., Cafe, Restaurant)">
+                        <button id="create-category-btn" class="create-btn">Create</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Success Notification -->
+        <div id="success-notification" class="success-notification">
+            <span id="success-message"></span>
+        </div>
+
+        <!-- Spot Info Modal -->
+        <div id="spot-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3 id="spot-name">Spot Name</h3>
+                <p id="spot-address"></p>
+                <div class="save-to-category">
+                    <label for="category-select">Save to category:</label>
+                    <select id="category-select">
+                        <option value="">Select a category...</option>
+                    </select>
+                    <button id="save-spot-btn" class="save-btn">Save Spot</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
