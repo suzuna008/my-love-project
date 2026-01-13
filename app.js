@@ -403,16 +403,18 @@ function showPlaceOnMap(place) {
     showFloatingSaveButton();
 
     // Show info window
+    const isMobile = window.innerWidth <= 768;
     const infoWindow = new google.maps.InfoWindow({
         content: `
-            <div style="padding: 0.5rem;">
-                <h3 style="margin: 0 0 0.5rem 0; font-size: 1rem;">${place.name}</h3>
-                <p style="margin: 0; color: #666; font-size: 0.875rem;">${place.formatted_address}</p>
-                <button onclick="openSpotModal()" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: #4285f4; color: white; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+            <div style="padding: ${isMobile ? '0.75rem' : '0.5rem'};">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: ${isMobile ? '0.95rem' : '1rem'};">${place.name}</h3>
+                <p style="margin: 0; color: #666; font-size: ${isMobile ? '0.8rem' : '0.875rem'};">${place.formatted_address}</p>
+                <button onclick="openSpotModal()" style="margin-top: 0.5rem; padding: ${isMobile ? '0.625rem 0.875rem' : '0.5rem 1rem'}; background: #4285f4; color: white; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-size: ${isMobile ? '0.875rem' : '1rem'};">
                     <span>💾</span> Save Spot
                 </button>
             </div>
-        `
+        `,
+        maxWidth: isMobile ? Math.min(300, window.innerWidth - 40) : 350
     });
 
     infoWindow.open(map, marker);
@@ -1526,20 +1528,26 @@ function updateInfoWindowWithDetails(infoWindow, marker, placeDetails, spot, cat
     }
     
     let content = `
-        <div style="padding: 0; min-width: 300px; max-width: 400px; max-height: 600px; overflow-y: auto;">
+        <div style="padding: 0; min-width: 280px; max-width: 90vw; max-width: 400px; max-height: 70vh; overflow-y: auto;">
     `;
     
-    // Photo
-    if (placeDetails && placeDetails.photoUrl) {
+        const isMobileView = window.innerWidth <= 768;
+        const photoHeight = isMobileView ? '150px' : '200px';
+        const baseFontSize = isMobileView ? '0.85rem' : '0.875rem';
+        const headingFontSize = isMobileView ? '1rem' : '1.1rem';
+        const padding = isMobileView ? '0.625rem' : '0.75rem';
+        
+        // Photo
+        if (placeDetails && placeDetails.photoUrl) {
+            content += `
+                <img src="${placeDetails.photoUrl}" style="width: 100%; height: ${photoHeight}; object-fit: cover; border-radius: 8px 8px 0 0;" alt="${escapeHtml(displayName)}">
+            `;
+        }
+        
         content += `
-            <img src="${placeDetails.photoUrl}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px 8px 0 0;" alt="${escapeHtml(displayName)}">
+                <div style="padding: ${padding};">
+                    <h3 style="margin: 0 0 0.5rem 0; font-size: ${headingFontSize}; font-weight: 600;">${escapeHtml(displayName)}</h3>
         `;
-    }
-    
-    content += `
-            <div style="padding: 0.75rem;">
-                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">${escapeHtml(displayName)}</h3>
-    `;
     
     // Rating
     if (placeDetails && placeDetails.rating) {
@@ -1667,13 +1675,15 @@ function showSpotOnMap(lat, lng, name, placeId = null) {
     markers.push(marker);
     
     // Show loading info window first
+    const isMobile = window.innerWidth <= 768;
     const loadingInfoWindow = new google.maps.InfoWindow({
         content: `
-            <div style="padding: 0.5rem;">
-                <h3 style="margin: 0 0 0.5rem 0; font-size: 1rem;">${escapeHtml(name)}</h3>
-                <p style="margin: 0; color: #999; font-size: 0.875rem;">Loading details...</p>
+            <div style="padding: ${isMobile ? '0.75rem' : '0.5rem'};">
+                <h3 style="margin: 0 0 0.5rem 0; font-size: ${isMobile ? '0.95rem' : '1rem'};">${escapeHtml(name)}</h3>
+                <p style="margin: 0; color: #999; font-size: ${isMobile ? '0.8rem' : '0.875rem'};">Loading details...</p>
             </div>
-        `
+        `,
+        maxWidth: isMobile ? Math.min(300, window.innerWidth - 40) : 350
     });
     loadingInfoWindow.open(map, marker);
     
@@ -1703,20 +1713,27 @@ function showSpotOnMap(lat, lng, name, placeId = null) {
             }
         }
         
+        const isMobileView = window.innerWidth <= 768;
+        const photoHeight = isMobileView ? '150px' : '200px';
+        const baseFontSize = isMobileView ? '0.85rem' : '0.875rem';
+        const headingFontSize = isMobileView ? '1rem' : '1.1rem';
+        const smallFontSize = isMobileView ? '0.75rem' : '0.875rem';
+        const padding = isMobileView ? '0.625rem' : '0.75rem';
+        
         let content = `
-            <div style="padding: 0; min-width: 300px; max-width: 400px; max-height: 600px; overflow-y: auto;">
+            <div style="padding: 0; min-width: 280px; max-width: 90vw; max-width: 400px; max-height: 70vh; overflow-y: auto;">
         `;
         
         // Photo
         if (placeDetails && placeDetails.photoUrl) {
             content += `
-                <img src="${placeDetails.photoUrl}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px 8px 0 0;" alt="${escapeHtml(displayName)}">
+                <img src="${placeDetails.photoUrl}" style="width: 100%; height: ${photoHeight}; object-fit: cover; border-radius: 8px 8px 0 0;" alt="${escapeHtml(displayName)}">
             `;
         }
         
         content += `
-                <div style="padding: 0.75rem;">
-                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">${escapeHtml(displayName)}</h3>
+                <div style="padding: ${padding};">
+                    <h3 style="margin: 0 0 0.5rem 0; font-size: ${headingFontSize}; font-weight: 600;">${escapeHtml(displayName)}</h3>
         `;
         
         // Rating
@@ -1727,8 +1744,8 @@ function showSpotOnMap(lat, lng, name, placeId = null) {
                 : '';
             content += `
                 <div style="margin-bottom: 0.5rem;">
-                    <span style="color: #ffa500; font-size: 0.9rem;">${stars}</span>
-                    <span style="color: #666; font-size: 0.875rem; margin-left: 0.5rem;">${placeDetails.rating.toFixed(1)}${ratingsText}</span>
+                    <span style="color: #ffa500; font-size: ${isMobileView ? '0.8rem' : '0.9rem'};">${stars}</span>
+                    <span style="color: #666; font-size: ${baseFontSize}; margin-left: 0.5rem;">${placeDetails.rating.toFixed(1)}${ratingsText}</span>
                 </div>
             `;
         }
@@ -1738,7 +1755,7 @@ function showSpotOnMap(lat, lng, name, placeId = null) {
             const placeType = formatPlaceType(placeDetails.types);
             content += `
                 <div style="margin-bottom: 0.5rem;">
-                    <span style="display: inline-block; background: #4285f4; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">${escapeHtml(placeType)}</span>
+                    <span style="display: inline-block; background: #4285f4; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: ${isMobileView ? '0.7rem' : '0.75rem'}; font-weight: 500;">${escapeHtml(placeType)}</span>
                 </div>
             `;
         }
@@ -1746,21 +1763,21 @@ function showSpotOnMap(lat, lng, name, placeId = null) {
         // Address
         if (placeDetails && placeDetails.address) {
             content += `
-                <p style="margin: 0 0 0.5rem 0; color: #666; font-size: 0.875rem; line-height: 1.4;">📍 ${escapeHtml(placeDetails.address)}</p>
+                <p style="margin: 0 0 0.5rem 0; color: #666; font-size: ${baseFontSize}; line-height: 1.4;">📍 ${escapeHtml(placeDetails.address)}</p>
             `;
         }
         
         // Phone
         if (placeDetails && placeDetails.phone) {
             content += `
-                <p style="margin: 0 0 0.5rem 0; color: #666; font-size: 0.875rem;">📞 ${escapeHtml(placeDetails.phone)}</p>
+                <p style="margin: 0 0 0.5rem 0; color: #666; font-size: ${baseFontSize};">📞 ${escapeHtml(placeDetails.phone)}</p>
             `;
         }
         
         // Website
         if (placeDetails && placeDetails.website) {
             content += `
-                <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem;">
+                <p style="margin: 0 0 0.5rem 0; font-size: ${baseFontSize};">
                     <a href="${placeDetails.website}" target="_blank" style="color: #4285f4; text-decoration: none;">🌐 Visit Website</a>
                 </p>
             `;
@@ -1771,13 +1788,13 @@ function showSpotOnMap(lat, lng, name, placeId = null) {
             const isOpen = placeDetails.opening_hours.open_now;
             content += `
                 <div style="margin: 0.5rem 0; padding: 0.5rem; background: #f8f9fa; border-radius: 4px;">
-                    <p style="margin: 0 0 0.25rem 0; font-size: 0.875rem; font-weight: 500;">
+                    <p style="margin: 0 0 0.25rem 0; font-size: ${baseFontSize}; font-weight: 500;">
                         ${isOpen ? '<span style="color: #4caf50;">●</span> Open now' : '<span style="color: #dc3545;">●</span> Closed now'}
                     </p>
-                    <details style="font-size: 0.75rem; color: #666;">
+                    <details style="font-size: ${isMobileView ? '0.7rem' : '0.75rem'}; color: #666;">
                         <summary style="cursor: pointer; margin-top: 0.25rem;">View hours</summary>
                         <div style="margin-top: 0.5rem;">
-                            ${placeDetails.opening_hours.weekday_text.map(day => `<div>${escapeHtml(day)}</div>`).join('')}
+                            ${placeDetails.opening_hours.weekday_text.map(day => `<div style="font-size: ${isMobileView ? '0.7rem' : '0.75rem'};">${escapeHtml(day)}</div>`).join('')}
                         </div>
                     </details>
                 </div>
@@ -1788,21 +1805,22 @@ function showSpotOnMap(lat, lng, name, placeId = null) {
         if (placeDetails && placeDetails.reviews && placeDetails.reviews.length > 0) {
             content += `
                 <div style="margin-top: 0.75rem; border-top: 1px solid #e0e0e0; padding-top: 0.75rem;">
-                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.9rem; font-weight: 600;">Recent Reviews</h4>
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: ${isMobileView ? '0.85rem' : '0.9rem'}; font-weight: 600;">Recent Reviews</h4>
             `;
             
             placeDetails.reviews.forEach(review => {
                 const reviewStars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-                const reviewText = review.text.length > 150 ? review.text.substring(0, 150) + '...' : review.text;
+                const reviewTextLength = isMobileView ? 100 : 150;
+                const reviewText = review.text.length > reviewTextLength ? review.text.substring(0, reviewTextLength) + '...' : review.text;
                 content += `
                     <div style="margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid #f0f0f0;">
                         <div style="display: flex; align-items: center; margin-bottom: 0.25rem;">
-                            ${review.profile_photo_url ? `<img src="${review.profile_photo_url}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 0.5rem;" alt="${escapeHtml(review.author_name)}">` : ''}
-                            <span style="font-weight: 500; font-size: 0.875rem;">${escapeHtml(review.author_name)}</span>
-                            <span style="margin-left: auto; color: #999; font-size: 0.75rem;">${escapeHtml(review.relative_time_description)}</span>
+                            ${review.profile_photo_url ? `<img src="${review.profile_photo_url}" style="width: ${isMobileView ? '20px' : '24px'}; height: ${isMobileView ? '20px' : '24px'}; border-radius: 50%; margin-right: 0.5rem;" alt="${escapeHtml(review.author_name)}">` : ''}
+                            <span style="font-weight: 500; font-size: ${baseFontSize};">${escapeHtml(review.author_name)}</span>
+                            <span style="margin-left: auto; color: #999; font-size: ${isMobileView ? '0.7rem' : '0.75rem'};">${escapeHtml(review.relative_time_description)}</span>
                         </div>
-                        <div style="color: #ffa500; font-size: 0.75rem; margin-bottom: 0.25rem;">${reviewStars}</div>
-                        <p style="margin: 0; color: #666; font-size: 0.875rem; line-height: 1.4;">${escapeHtml(reviewText)}</p>
+                        <div style="color: #ffa500; font-size: ${isMobileView ? '0.7rem' : '0.75rem'}; margin-bottom: 0.25rem;">${reviewStars}</div>
+                        <p style="margin: 0; color: #666; font-size: ${baseFontSize}; line-height: 1.4;">${escapeHtml(reviewText)}</p>
                     </div>
                 `;
             });
@@ -1815,9 +1833,10 @@ function showSpotOnMap(lat, lng, name, placeId = null) {
             </div>
         `;
         
+        // Detect mobile screen for info window sizing
         const infoWindow = new google.maps.InfoWindow({
             content: content,
-            maxWidth: 400
+            maxWidth: isMobileView ? Math.min(350, window.innerWidth - 40) : 400
         });
         
         infoWindow.open(map, marker);
@@ -1884,8 +1903,11 @@ function updateMarkers() {
                 </div>
             `;
             
+            // Detect mobile screen
+            const isMobile = window.innerWidth <= 768;
             const infoWindow = new google.maps.InfoWindow({
-                content: initialContent
+                content: initialContent,
+                maxWidth: isMobile ? Math.min(350, window.innerWidth - 40) : 400
             });
 
             marker.addListener('click', () => {

@@ -26,6 +26,12 @@ body {
     z-index: 1000;
 }
 
+@media (max-width: 768px) {
+    .header {
+        padding: 0.75rem 1rem;
+    }
+}
+
 .search-container {
     max-width: 100%;
     position: relative;
@@ -75,6 +81,14 @@ body {
     cursor: pointer;
     font-weight: 500;
     transition: background 0.2s ease;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .search-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
 }
 
 .search-btn:hover {
@@ -818,18 +832,117 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    body {
+        overflow: auto;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .container {
+        height: auto;
+        min-height: 100vh;
+    }
+    
     .main-content {
         flex-direction: column;
+        height: auto;
+        min-height: calc(100vh - 80px);
     }
 
     .sidebar {
         width: 100%;
-        max-height: 40vh;
+        max-height: 50vh;
         border-left: none;
         border-top: 1px solid #e0e0e0;
+        order: 2;
     }
 
     .map-container {
-        height: 60vh;
+        height: 50vh;
+        min-height: 300px;
+        order: 1;
+    }
+    
+    .sidebar-header {
+        padding: 1rem;
+    }
+    
+    .sidebar-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .categories-list {
+        padding: 0.75rem;
+    }
+    
+    .category-header {
+        padding: 0.625rem 0.75rem;
+    }
+    
+    .category-name {
+        font-size: 0.9rem;
+    }
+    
+    .spot-item {
+        padding: 0.625rem 0.75rem 0.625rem 1.5rem;
+    }
+    
+    .spot-name {
+        font-size: 0.85rem;
+    }
+    
+    .modal-content {
+        margin: 5% auto;
+        padding: 1.5rem;
+        width: 95%;
+        max-width: none;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .modal-content h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    #category-name-input,
+    #category-select {
+        font-size: 0.9rem;
+        padding: 0.625rem;
+    }
+    
+    .create-btn,
+    .save-btn {
+        font-size: 0.9rem;
+        padding: 0.625rem;
+    }
+    
+    .success-notification {
+        top: 0.5rem;
+        right: 0.5rem;
+        left: 0.5rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+        transform: translateY(-100px);
+    }
+    
+    .success-notification.show {
+        transform: translateY(0);
+    }
+    
+    .autocomplete-dropdown {
+        max-height: 300px;
+    }
+    
+    .autocomplete-item {
+        padding: 0.625rem 0.75rem;
+    }
+    
+    .autocomplete-item-name {
+        font-size: 0.875rem;
+    }
+    
+    .autocomplete-item-address {
+        font-size: 0.8rem;
     }
 }
